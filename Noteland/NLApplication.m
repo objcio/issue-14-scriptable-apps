@@ -25,31 +25,28 @@
 
 - (NSMutableArray *)notes {
 
-	if (!_notes) {
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
 
-		static dispatch_once_t onceToken;
-		dispatch_once(&onceToken, ^{
+		NLNote *note0 = [NLNote new];
+		note0.text = @"Note 0\nThis is text for note 0.";
+		NLTag *tag0 = [NLTag new];
+		tag0.name = @"Cats";
+		tag0.note = note0;
+		note0.tags = [@[tag0] mutableCopy];
 
-			NLNote *note0 = [NLNote new];
-			note0.text = @"Note 0\nThis is text for note 0.";
-			NLTag *tag0 = [NLTag new];
-			tag0.name = @"Cats";
-			tag0.note = note0;
-			note0.tags = [@[tag0] mutableCopy];
+		NLNote *note1 = [NLNote new];
+		note1.text = @"Note 1\nThis is text for note 1.";
+		NLTag *tag1 = [NLTag new];
+		tag1.name = @"Tiger Swallowtail";
+		tag1.note = note1;
+		NLTag *tag2 = [NLTag new];
+		tag2.name = @"Steak-frites";
+		tag2.note = note1;
+		note1.tags = [@[tag1, tag2] mutableCopy];
 
-			NLNote *note1 = [NLNote new];
-			note1.text = @"Note 1\nThis is text for note 1.";
-			NLTag *tag1 = [NLTag new];
-			tag1.name = @"Tiger Swallowtail";
-			tag1.note = note1;
-			NLTag *tag2 = [NLTag new];
-			tag2.name = @"Steak-frites";
-			tag2.note = note1;
-			note1.tags = [@[tag1, tag2] mutableCopy];
-
-			_notes = [@[note0, note1] mutableCopy];
-		});
-	}
+		_notes = [@[note0, note1] mutableCopy];
+	});
 
 	return _notes;
 }
